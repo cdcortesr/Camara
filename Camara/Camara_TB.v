@@ -19,9 +19,21 @@ module Camara_TB;
 	Camara Sim(clk,rst,Vsync,Href,Pclk,Xclk,Imagen,Reset,PWDN);
 	
 	always #5 clk=!clk;
+	always #10 Pclk=!Pclk;
 
 	initial
 		begin
+		Imagen=8'b10101010;
+		#8
+		Imagen=8'b11111111;
+		#8
+		Imagen=8'b00000000;
+		#8
+		Imagen=8'b01010101;
+		#8
+
+
+		
 		#(tiempo)$finish;
 	end
 	
