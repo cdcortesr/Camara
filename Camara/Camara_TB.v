@@ -4,6 +4,7 @@
 module Camara_TB;
 
 	reg clk=0;
+	reg rst=0;
 	reg Vsync=0;
 	reg Href=0;
 	reg Pclk=0;
@@ -15,7 +16,7 @@ module Camara_TB;
 
 	parameter tiempo = 500;
 
-	Camara Sim(clk,Vsync,Href,Pclk,Xclk,Imagen,Reset,PWDN);
+	Camara Sim(clk,rst,Vsync,Href,Pclk,Xclk,Imagen,Reset,PWDN);
 	
 	always #5 clk=!clk;
 

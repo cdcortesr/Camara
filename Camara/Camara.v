@@ -1,6 +1,7 @@
-module Camara(clk,Vsync,Href,Pclk,Xclk,Imagen,Reset,PWDN);
+module Camara(clk,rst,Vsync,Href,Pclk,Xclk,Imagen,Reset,PWDN);
 
 input clk;
+input rst;
 input Vsync;
 input Href;
 input Pclk;
@@ -31,9 +32,9 @@ RGB555		5-bit R, 5-bit G, 5-bit B 				1 0 1 1
 
 
 reg [1:0] cont_clk=	0;
-reg [10:0]cont_X=	0;
-reg [10:0]cont_Y=	0;
+reg [23:0]cont_ram=	0;
 reg START=	0;
+
 
 reg [7:0] Memoria [0:(307200-1)]; // 640 x 480	Numero de registros
 
@@ -41,23 +42,28 @@ reg [7:0] Memoria [0:(307200-1)]; // 640 x 480	Numero de registros
 
 always@(posedge clk)
 	begin
-	cont_clk= (cont_clk + 1);
-	if(cont_clk==2) //25Mhz
+	if(rst==1)
+	cont_clk=0;
+	else
+		if(cont_clk==2'b11) //25Mhz
 		begin
 		Xclk=!Xclk;
 		cont_clk=0;
 		end
+		else
+		cont_clk= cont_clk+2'b01;
 	end
 
 //-------------------------------\\
 
-/*
+
 always@(posedge Pclk)
 	begin
-	
-	if(Href == 1 && START==1)
-		Memoria[cont_X] <= Imagen;
-		cont_X<=cont_X+1'b1;	
+	if(rst==1)
+	cont_ram=0;
+	else
+		if(START==1 && Href==1)
+		cont_ram=cont_ram+1'b1;	
 
 	end
 
@@ -69,48 +75,10 @@ always@(posedge Vsync)
 	begin
 	START<=!START;	
 	end
-*/
-//	RAM_imagen ram()
 
+
+RAM_imagen ram(.clk_i(clk), .rst_i(Reset), .we_i(START), .adr_i(cont_ram), .dat_i(Imagen));
 
 endmodule
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 

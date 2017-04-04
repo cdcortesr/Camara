@@ -10,10 +10,9 @@ SIM_COMP_SCRIPT = simulation/$(DESIGN)_TB.do
 SIMGEN_OPTIONS  = -p $(FPGA_ARCH) -lang $(LANGUAGE)
 IVERILOG        = iverilog
 
-SRC             = $(DESIGN).v \
+SRC             = $(DESIGN).v RAM_imagen.v
 
-SIM_SRC = $(DESIGN)_TB.v          \
-
+SIM_SRC = $(DESIGN)_TB.v       \
 
 
 all:            bits
@@ -26,46 +25,6 @@ clean:
 
 cleanall: clean
 	rm -rf build simulation/work simulation/transcript  simulation/vsim.wlf simulation/$(DESIGN)_TB.vvp simulation/$(DESIGN)_TB.vcd
-
-bits:           $(DESIGN).bit
-
-DEVICE          = xc7a100t-1csg324
-BGFLAGS         =  -g TdoPin:PULLNONE -g DonePin:PULLUP \
-                   -g CRC:enable -g StartUpClk:CCLK
-
-XILINXCADROOT   = /opt/Xilinx/14.7/ISE_DS/ISE/bin/lin/ise
-SIM_CMD         = vsim 
-SIM_COMP_SCRIPT = simulation/$(DESIGN)_TB.do
-SIMGEN_OPTIONS  = -p $(FPGA_ARCH) -lang $(LANGUAGE)
-IVERILOG        = iverilog
-
-SAKC_IP         = 192.168.254.101
-
-MULT		= multiplier
-MULT_32		= multiplier/mult_32
-J1		= j1
-DIV		= divider
-DIV_16		= divider/div_16
-UART		= uart
-dp_RAM		= dpRAM
-
-
-SRC             = $(DESIGN).v 
-
-SIM_SRC = $(DESIGN)_TB.v          \
-
- 
-all:            bits
-
-remake:         clean-build all
-
-clean:
-	rm -f *~ */*~ a.out *.log *.key *.edf *.ps trace.dat 
-	rm -f *.bit
-	rm -rf build
-
-cleanall: clean
-	rm -rf build simulation/work simulation/transcript  simulation/vsim.wlf simulation/$(DESIGN)_TB.vvp simulation/*
 
 bits:           $(DESIGN).bit
 
