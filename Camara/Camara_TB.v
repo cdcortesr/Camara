@@ -20,18 +20,38 @@ module Camara_TB;
 	
 	always #5 clk=!clk;
 	always #10 Pclk=!Pclk;
+	always #43 Href=!Href;
+
 
 	initial
 		begin
+		Vsync=1;
+		#2
+		Vsync=0;
 		Imagen=8'b10101010;
-		#8
+		#10
 		Imagen=8'b11111111;
-		#8
+		#10
 		Imagen=8'b00000000;
-		#8
+		#10
 		Imagen=8'b01010101;
-		#8
-
+		#10
+		Imagen=8'b10101010;
+		#10
+		Imagen=8'b11111111;
+		#10
+		Imagen=8'b00000000;
+		#10
+		Imagen=8'b01010101;
+		#10
+		Imagen=8'b10101010;
+		#10
+		Imagen=8'b11111111;
+		#10
+		Imagen=8'b00000000;
+		#10
+		Imagen=8'b01010101;
+		#10
 
 		
 		#(tiempo)$finish;

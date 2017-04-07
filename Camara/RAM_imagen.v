@@ -8,17 +8,11 @@ module RAM_imagen(
 	output reg [7:0] dat_o,
 	input      [7:0] dat_i
 
-	//input      adr_i,
-	//output reg dat_o,
-	//input      dat_i
 );
 
 parameter word_depth = 307200; //640 x480
 parameter word_width = 8;
 
-//-----------------------------------------------------------------
-// 
-//-----------------------------------------------------------------
 reg            [7:0] ram [0:word_depth-1];    // actual RAM
 
 always @(posedge clk_i)
@@ -28,4 +22,3 @@ begin
     
 end
 endmodule
-

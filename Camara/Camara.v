@@ -1,22 +1,18 @@
-module Camara(clk,rst,Vsync,Href,Pclk,Xclk,Imagen,Reset,PWDN);
+module Camara(clk,rst,rw,Vsync,Href,Pclk,Xclk,Imagen);
 
 input clk;
 input rst;
+input rw;
 input Vsync;
 input Href;
 input Pclk;
 input [7:0]Imagen;
 
-output reg Reset=0;
-output reg PWDN=0;
 output reg Xclk=0;
 
-reg [10:0]SCR_X = 480;
-reg [10:0]SCR_V = 640;
+wire w_enable;
+assign w_enable = rw && Href;
 
-reg [7:0]Red =0;
-reg [7:0]Green =0;
-reg [7:0]Blue =0;
 
 /*
 Format			Pixel Data Output		COM7[2] COM7[0] COM15[5] COM15[4]
@@ -35,8 +31,6 @@ reg [1:0] cont_clk=	0;
 reg [23:0]cont_ram=	0;
 reg START=	0;
 
-
-reg [7:0] Memoria [0:(307200-1)]; // 640 x 480	Numero de registros
 
 //--- f_Xclk= 25 Mhz -----------\\
 
@@ -71,13 +65,16 @@ always@(posedge Pclk)
 //-------------------------------\\
 
 
-always@(posedge Vsync)
+always@(negedge Vsync)
 	begin
-	START<=!START;	
+	if(rst)
+		START=0;
+	else if(rw)
+		START=!START;	
 	end
 
 
-RAM_imagen ram(.clk_i(clk), .rst_i(Reset), .we_i(START), .adr_i(cont_ram), .dat_i(Imagen));
+RAM_imagen ram(.clk_i(Pclk), .rst_i(rst), .we_i(w_enable), .adr_i(cont_ram), .dat_i(Imagen));
 
 endmodule
 
