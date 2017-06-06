@@ -87,6 +87,6 @@ iversim:  build/project.src
 	vvp simulation/$(DESIGN)_TB.vvp; mv $(DESIGN)_TB.vcd simulation/
 	gtkwave simulation/$(DESIGN)_TB.vcd&
 
-upload: $(DESIGN).bit
+upload: 
 	djtgcfg init -d $(BOARD)
 	djtgcfg prog -d $ Nexys4 -i 0 -f $(DESIGN).bit
