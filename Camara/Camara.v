@@ -14,27 +14,26 @@ module Camara (
 		input		clk,
 		input		rst,
 		
-		//Entradas Software
+        //Software inputs (if post processing is required)
 		//input		we,
 		//input		re,
 		//input [18:0]	addr_ram_i,
 
-		//Entradas Hardware
+	//Hardware Inputs from the camera module
 		input		Vsync,
 		input		Href,
 		input		Pclk,
 		input [7:0]	ram_imagen_i,
 
-		//Salida Hardware
+		//Outputs
 		output reg	Xclk,
 
-		//Salida Software
+		//Optional RAM output
 		//output  [7:0] ram_imagen_o,
 		//output 	fin,
 
 		output reg led1,
 		output [7:0] pixel,
-		//output [10:0] address,
 		output VS,
 		output href,
 		output pclk,
@@ -46,12 +45,11 @@ module Camara (
 
 //-------------------------------------------------------
 
-//Salidas software
 wire [7:0]ram_imagen_o;
 wire fin;
 
-//Entradas Software
-reg we=1;
+// Write and read operations can be changed to be software controlled. We=1 and Re=0 for test purposes. 
+reg we=1;                
 reg re=0;
 reg [18:0] addr_ram_i=0;
 
@@ -64,7 +62,7 @@ reg [18:0]direccion= 0;
 reg 	  START = 0;
 
 wire w_enable;
-assign w_enable = we & Href & START & !fin; //Comenzo un nuevo ciclo y Href activo y no a terminado
+assign w_enable = we & Href & START & !fin; // RAM write operation only performed at Href signaling, and when RAM is not full
 
 //-----------------------------------------------------------
 //assign pixel=ram_imagen_i;
@@ -86,7 +84,7 @@ assign pixel=ram_imagen_i;
 
 //--- f_Xclk= 25 Mhz -----------\\
 
-always@(posedge clk)
+        always@(posedge clk)			//Xclk = clk/4(module input)
 	begin
 	if(rst)
 	begin
@@ -105,7 +103,7 @@ always@(posedge clk)
 
 //-------------------------------\\
 
-always@(negedge Vsync)
+always@(negedge Vsync)                //start operation
 	begin
 	if(rst)
 		begin
@@ -134,7 +132,7 @@ always@(posedge Vsync)
 
 //-------------------------------\\
 
-always@(posedge Pclk)			//tp=2 x Pclk
+        always@(posedge Pclk)			//cont_ram increased at a rate of Pclk/4 if w_enable  tp=2 x Pclk
 	begin
 	if(rst)
 		cont_ram<=0;
@@ -152,7 +150,7 @@ always@(posedge Pclk)			//tp=2 x Pclk
 
 //-------------------------------\\
 
-always@(posedge clk)
+        always@(posedge clk)                //direccion gets updates with each clk cycle
 	begin
 	if(w_enable)
 		direccion <= cont_ram;
