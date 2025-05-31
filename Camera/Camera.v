@@ -161,7 +161,7 @@ always@(posedge Vsync)
 
 
 
-RAM_imagen ram(.clk_i(Pclk),.rst(rst), .we_i(w_enable),.re_i(re), .adr_i(direccion), .dat_i(ram_imagen_i), .dat_o(ram_imagen_o), .fin(fin));
+RAM_picture_frame ram(.clk_i(Pclk),.rst(rst), .we_i(w_enable),.re_i(re), .adr_i(direccion), .dat_i(ram_imagen_i), .dat_o(ram_imagen_o), .fin(fin));
 
 endmodule
 

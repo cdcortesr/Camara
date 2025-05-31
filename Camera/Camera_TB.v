@@ -1,7 +1,7 @@
 `timescale 1ns/1ps
 `define SIMULATION
 
-module Camara_TB;
+module Camera_TB;
 
 	reg clk=0;
 	reg rst=0;
@@ -16,7 +16,7 @@ module Camara_TB;
 
 	parameter tiempo = 500;
 
-	Camara Sim(clk,rst,Vsync,Href,Pclk,Xclk,Imagen,Reset,PWDN);
+	Camera Sim(clk,rst,Vsync,Href,Pclk,Xclk,Imagen,Reset,PWDN);
 	
 	always #5 clk=!clk;
 	always #10 Pclk=!Pclk;
