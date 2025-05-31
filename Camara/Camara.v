@@ -7,7 +7,7 @@ GRB 4:2:2	8-bit G, 8-bit R or 8-bit G, 8-bit B 			1 0 x 0
 RGB565		5-bit R, 6-bit G, 5-bit B 				1 0 0 1
 RGB555		5-bit R, 5-bit G, 5-bit B 				1 0 1 1
 
-
+Different data input formats from the camera
 */
 
 module Camara (
